@@ -1,172 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Quartz Clock</title>
-    <style>
-        /* 背景样式，未来感渐变 */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #1f1c2c, #928dab);
-            background-size: 400% 400%;
-            animation: backgroundAnimation 10s ease infinite;
-            overflow: hidden;
-            color: #0ff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotating Hello World Sphere</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #0d0d0d, #3a3a3a);
+      overflow: hidden;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
 
-        /* 背景动画 */
-        @keyframes backgroundAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    .sphere {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      perspective: 1000px;
+    }
 
-        /* 数码管样式时钟 */
-        .clock {
-            font-size: 8em;
-            color: #0ff;
-            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
-            display: flex;
-        }
+    .text-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%);
+    }
 
-        /* 数字容器 */
-        .digit {
-            display: inline-block;
-            width: 0.6em;
-            margin: 0 0.05em;
-            position: relative;
-        }
-
-        /* 七段数码管段的样式 */
-        .segment {
-            position: absolute;
-            background-color: #333;
-            width: 100%;
-            height: 20%;
-            border-radius: 3px;
-            box-shadow: 0 0 10px #0ff, 0 0 15px #0ff;
-        }
-
-        /* 每段的位置 */
-        .segment.a { top: 0; left: 0; }
-        .segment.b { top: 20%; right: 0; transform: rotate(90deg); }
-        .segment.c { top: 60%; right: 0; transform: rotate(90deg); }
-        .segment.d { bottom: 0; left: 0; }
-        .segment.e { top: 60%; left: 0; transform: rotate(90deg); }
-        .segment.f { top: 20%; left: 0; transform: rotate(90deg); }
-        .segment.g { top: 40%; left: 0; }
-
-        /* 各数字亮的状态 */
-        .active {
-            background-color: #0ff;
-        }
-
-        /* 冒号样式 */
-        .colon {
-            display: inline-block;
-            width: 0.2em;
-            height: 100%;
-            margin: 0 0.05em;
-            position: relative;
-        }
-
-        .colon::before, .colon::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 20%;
-            background-color: #0ff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-        }
-
-        .colon::before { top: 30%; }
-        .colon::after { bottom: 30%; }
-
-    </style>
+    .text {
+      position: absolute;
+      font-size: 20px;
+      color: #0ff;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      transition: transform 0.5s ease;
+    }
+  </style>
 </head>
 <body>
-    <div class="clock">
-        <div class="digit" id="hours-tens"></div>
-        <div class="digit" id="hours-units"></div>
-        <div class="colon"></div>
-        <div class="digit" id="minutes-tens"></div>
-        <div class="digit" id="minutes-units"></div>
-        <div class="colon"></div>
-        <div class="digit" id="seconds-tens"></div>
-        <div class="digit" id="seconds-units"></div>
+  <div class="sphere">
+    <div class="text-layer" id="textLayer">
+      <!-- 多种语言的“Hello World”文本 -->
+      <div class="text" style="transform: rotateX(0deg) rotateY(0deg) translateZ(150px);">Hello World</div>
+      <div class="text" style="transform: rotateX(20deg) rotateY(30deg) translateZ(150px);">こんにちは世界</div>
+      <div class="text" style="transform: rotateX(-20deg) rotateY(-30deg) translateZ(150px);">你好，世界</div>
+      <div class="text" style="transform: rotateX(40deg) rotateY(60deg) translateZ(150px);">Bonjour le monde</div>
+      <div class="text" style="transform: rotateX(-40deg) rotateY(-60deg) translateZ(150px);">Hallo Welt</div>
+      <div class="text" style="transform: rotateX(60deg) rotateY(90deg) translateZ(150px);">Привет мир</div>
+      <div class="text" style="transform: rotateX(-60deg) rotateY(-90deg) translateZ(150px);">안녕하세요 세계</div>
+      <div class="text" style="transform: rotateX(80deg) rotateY(120deg) translateZ(150px);">Hola Mundo</div>
+      <div class="text" style="transform: rotateX(-80deg) rotateY(-120deg) translateZ(150px);">Ciao mondo</div>
+      <div class="text" style="transform: rotateX(100deg) rotateY(150deg) translateZ(150px);">Hej världen</div>
     </div>
+  </div>
 
-    <script>
-        // 数字到七段数码管的映射
-        const segmentMap = {
-            "0": [1, 1, 1, 1, 1, 1, 0],
-            "1": [0, 1, 1, 0, 0, 0, 0],
-            "2": [1, 1, 0, 1, 1, 0, 1],
-            "3": [1, 1, 1, 1, 0, 0, 1],
-            "4": [0, 1, 1, 0, 0, 1, 1],
-            "5": [1, 0, 1, 1, 0, 1, 1],
-            "6": [1, 0, 1, 1, 1, 1, 1],
-            "7": [1, 1, 1, 0, 0, 0, 0],
-            "8": [1, 1, 1, 1, 1, 1, 1],
-            "9": [1, 1, 1, 1, 0, 1, 1]
-        };
+  <script>
+    const textLayer = document.getElementById('textLayer');
+    let mouseX = 0, mouseY = 0;
 
-        function createDigitElement() {
-            const digit = document.createElement("div");
-            digit.className = "digit";
-            ["a", "b", "c", "d", "e", "f", "g"].forEach(segmentClass => {
-                const segment = document.createElement("div");
-                segment.className = `segment ${segmentClass}`;
-                digit.appendChild(segment);
-            });
-            return digit;
-        }
+    document.addEventListener('mousemove', (event) => {
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
 
-        // 更新单个数字的数码管显示
-        function updateDigit(digitElement, number) {
-            const segments = digitElement.querySelectorAll(".segment");
-            segmentMap[number].forEach((value, index) => {
-                segments[index].classList.toggle("active", value === 1);
-            });
-        }
+      mouseX = (event.clientX / windowWidth) * 360;
+      mouseY = (event.clientY / windowHeight) * -360;
 
-        // 更新时钟显示
-        function updateClock() {
-            const now = new Date();
-            const timeDigits = [
-                Math.floor(now.getHours() / 10), now.getHours() % 10,
-                Math.floor(now.getMinutes() / 10), now.getMinutes() % 10,
-                Math.floor(now.getSeconds() / 10), now.getSeconds() % 10
-            ];
-
-            const digitElements = [
-                document.getElementById('hours-tens'),
-                document.getElementById('hours-units'),
-                document.getElementById('minutes-tens'),
-                document.getElementById('minutes-units'),
-                document.getElementById('seconds-tens'),
-                document.getElementById('seconds-units')
-            ];
-
-            digitElements.forEach((digit, index) => {
-                updateDigit(digit, timeDigits[index].toString());
-            });
-        }
-
-        // 初始渲染和数字更新
-        document.querySelectorAll(".digit").forEach(digit => {
-            digit.replaceWith(createDigitElement());
-        });
-
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
+      textLayer.style.transform = `translate(-50%, -50%) rotateX(${mouseY}deg) rotateY(${mouseX}deg)`;
+    });
+  </script>
 </body>
-</ht
+</html>
