@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Clock</title>
+    <title>Futuristic Clock</title>
     <style>
-        /* 背景渐变，科技感字体和颜色 */
+        /* 背景样式，带有未来感的渐变动画 */
         body {
             display: flex;
             justify-content: center;
@@ -13,63 +13,131 @@
             height: 100vh;
             margin: 0;
             font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: backgroundAnimation 10s ease infinite;
             color: #00e5ff;
             overflow: hidden;
         }
 
-        /* 时钟样式 */
+        /* 背景动画效果 */
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 时钟样式，字体大且带有发光效果 */
         .clock {
-            font-size: 3em;
+            font-size: 8em;
             color: #00e5ff;
             text-shadow: 0 0 15px #00e5ff, 0 0 30px #00e5ff, 0 0 45px #00e5ff;
-            animation: glow 1.5s infinite alternate;
+            display: flex;
         }
 
-        /* 科技感动画效果 */
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 15px #00e5ff, 0 0 30px #00e5ff, 0 0 45px #00e5ff;
-            }
-            to {
-                text-shadow: 0 0 20px #00e5ff, 0 0 40px #00e5ff, 0 0 60px #00e5ff;
-            }
-        }
-
-        /* 数字滚动效果 */
+        /* 翻页效果样式 */
         .digit {
             display: inline-block;
             position: relative;
-            animation: flip 1s ease-in-out infinite;
+            width: 1em;
+            height: 1em;
+            perspective: 1000px;
         }
 
-        @keyframes flip {
-            0%, 100% { transform: rotateX(0); }
-            50% { transform: rotateX(180deg); }
+        .flip-top, .flip-bottom {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            line-height: 1em;
+            overflow: hidden;
+            backface-visibility: hidden;
         }
+
+        /* 翻页的顶部与底部样式 */
+        .flip-top {
+            top: 0;
+            background-color: #333;
+            color: #00e5ff;
+            text-align: center;
+            transform-origin: bottom;
+        }
+
+        .flip-bottom {
+            bottom: 0;
+            background-color: #222;
+            color: #00e5ff;
+            text-align: center;
+            transform-origin: top;
+        }
+
+        /* 动态翻转动画 */
+        .flip-animation .flip-top {
+            animation: flipTop 0.5s ease-in-out;
+        }
+        
+        .flip-animation .flip-bottom {
+            animation: flipBottom 0.5s ease-in-out;
+        }
+
+        /* 翻页动画 */
+        @keyframes flipTop {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-180deg); }
+        }
+
+        @keyframes flipBottom {
+            0% { transform: rotateX(180deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
     </style>
 </head>
 <body>
-    <div class="clock" id="clock">
-        <span class="digit" id="hours">00</span> :
-        <span class="digit" id="minutes">00</span> :
-        <span class="digit" id="seconds">00</span>
+    <div class="clock">
+        <div class="digit" id="hours-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <div class="digit" id="hours-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <span>:</span>
+        <div class="digit" id="minutes-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <div class="digit" id="minutes-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <span>:</span>
+        <div class="digit" id="seconds-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <div class="digit" id="seconds-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
     </div>
 
     <script>
-        function updateTime() {
+        // 更新时钟的翻页效果
+        function updateClock() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeDigits = [
+                Math.floor(now.getHours() / 10), now.getHours() % 10,
+                Math.floor(now.getMinutes() / 10), now.getMinutes() % 10,
+                Math.floor(now.getSeconds() / 10), now.getSeconds() % 10
+            ];
 
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds;
+            const digitElements = [
+                document.getElementById('hours-tens'),
+                document.getElementById('hours-units'),
+                document.getElementById('minutes-tens'),
+                document.getElementById('minutes-units'),
+                document.getElementById('seconds-tens'),
+                document.getElementById('seconds-units')
+            ];
+
+            digitElements.forEach((element, index) => {
+                const top = element.querySelector('.flip-top');
+                const bottom = element.querySelector('.flip-bottom');
+                if (top.textContent != timeDigits[index]) {
+                    top.textContent = timeDigits[index];
+                    bottom.textContent = timeDigits[index];
+                    element.classList.add('flip-animation');
+                    setTimeout(() => element.classList.remove('flip-animation'), 500);
+                }
+            });
         }
 
-        setInterval(updateTime, 1000);
-        updateTime();
+        // 每秒更新一次时钟
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
