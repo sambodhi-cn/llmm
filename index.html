@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Clock</title>
+    <title>Digital Quartz Clock</title>
     <style>
-        /* 背景样式，带有未来感的渐变动画 */
+        /* 背景样式，未来感渐变 */
         body {
             display: flex;
             justify-content: center;
@@ -13,100 +13,131 @@
             height: 100vh;
             margin: 0;
             font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
             background-size: 400% 400%;
             animation: backgroundAnimation 10s ease infinite;
-            color: #00e5ff;
             overflow: hidden;
+            color: #0ff;
         }
 
-        /* 背景动画效果 */
+        /* 背景动画 */
         @keyframes backgroundAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 时钟样式，字体大且带有发光效果 */
+        /* 数码管样式时钟 */
         .clock {
             font-size: 8em;
-            color: #00e5ff;
-            text-shadow: 0 0 15px #00e5ff, 0 0 30px #00e5ff, 0 0 45px #00e5ff;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
             display: flex;
         }
 
-        /* 翻页效果样式 */
+        /* 数字容器 */
         .digit {
             display: inline-block;
+            width: 0.6em;
+            margin: 0 0.05em;
             position: relative;
-            width: 1em;
-            height: 1em;
-            perspective: 1000px;
-            margin: 0 0.1em;
         }
 
-        .flip-top, .flip-bottom {
+        /* 七段数码管段的样式 */
+        .segment {
+            position: absolute;
+            background-color: #333;
+            width: 100%;
+            height: 20%;
+            border-radius: 3px;
+            box-shadow: 0 0 10px #0ff, 0 0 15px #0ff;
+        }
+
+        /* 每段的位置 */
+        .segment.a { top: 0; left: 0; }
+        .segment.b { top: 20%; right: 0; transform: rotate(90deg); }
+        .segment.c { top: 60%; right: 0; transform: rotate(90deg); }
+        .segment.d { bottom: 0; left: 0; }
+        .segment.e { top: 60%; left: 0; transform: rotate(90deg); }
+        .segment.f { top: 20%; left: 0; transform: rotate(90deg); }
+        .segment.g { top: 40%; left: 0; }
+
+        /* 各数字亮的状态 */
+        .active {
+            background-color: #0ff;
+        }
+
+        /* 冒号样式 */
+        .colon {
+            display: inline-block;
+            width: 0.2em;
+            height: 100%;
+            margin: 0 0.05em;
+            position: relative;
+        }
+
+        .colon::before, .colon::after {
+            content: '';
             position: absolute;
             width: 100%;
-            height: 50%;
-            line-height: 1em;
-            overflow: hidden;
-            backface-visibility: hidden;
+            height: 20%;
+            background-color: #0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
         }
 
-        /* 翻页的顶部与底部样式 */
-        .flip-top {
-            top: 0;
-            background-color: #333;
-            color: #00e5ff;
-            text-align: center;
-            transform-origin: bottom;
-        }
-
-        .flip-bottom {
-            bottom: 0;
-            background-color: #222;
-            color: #00e5ff;
-            text-align: center;
-            transform-origin: top;
-        }
-
-        /* 动态翻转动画 */
-        .flip-animation .flip-top {
-            animation: flipTop 0.5s ease-in-out;
-        }
-        
-        .flip-animation .flip-bottom {
-            animation: flipBottom 0.5s ease-in-out;
-        }
-
-        /* 翻页动画 */
-        @keyframes flipTop {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-180deg); }
-        }
-
-        @keyframes flipBottom {
-            0% { transform: rotateX(180deg); }
-            100% { transform: rotateX(0deg); }
-        }
+        .colon::before { top: 30%; }
+        .colon::after { bottom: 30%; }
 
     </style>
 </head>
 <body>
     <div class="clock">
-        <div class="digit" id="hours-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
-        <div class="digit" id="hours-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
-        <span>:</span>
-        <div class="digit" id="minutes-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
-        <div class="digit" id="minutes-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
-        <span>:</span>
-        <div class="digit" id="seconds-tens"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
-        <div class="digit" id="seconds-units"><span class="flip-top">0</span><span class="flip-bottom">0</span></div>
+        <div class="digit" id="hours-tens"></div>
+        <div class="digit" id="hours-units"></div>
+        <div class="colon"></div>
+        <div class="digit" id="minutes-tens"></div>
+        <div class="digit" id="minutes-units"></div>
+        <div class="colon"></div>
+        <div class="digit" id="seconds-tens"></div>
+        <div class="digit" id="seconds-units"></div>
     </div>
 
     <script>
-        // 更新时钟的翻页效果
+        // 数字到七段数码管的映射
+        const segmentMap = {
+            "0": [1, 1, 1, 1, 1, 1, 0],
+            "1": [0, 1, 1, 0, 0, 0, 0],
+            "2": [1, 1, 0, 1, 1, 0, 1],
+            "3": [1, 1, 1, 1, 0, 0, 1],
+            "4": [0, 1, 1, 0, 0, 1, 1],
+            "5": [1, 0, 1, 1, 0, 1, 1],
+            "6": [1, 0, 1, 1, 1, 1, 1],
+            "7": [1, 1, 1, 0, 0, 0, 0],
+            "8": [1, 1, 1, 1, 1, 1, 1],
+            "9": [1, 1, 1, 1, 0, 1, 1]
+        };
+
+        function createDigitElement() {
+            const digit = document.createElement("div");
+            digit.className = "digit";
+            ["a", "b", "c", "d", "e", "f", "g"].forEach(segmentClass => {
+                const segment = document.createElement("div");
+                segment.className = `segment ${segmentClass}`;
+                digit.appendChild(segment);
+            });
+            return digit;
+        }
+
+        // 更新单个数字的数码管显示
+        function updateDigit(digitElement, number) {
+            const segments = digitElement.querySelectorAll(".segment");
+            segmentMap[number].forEach((value, index) => {
+                segments[index].classList.toggle("active", value === 1);
+            });
+        }
+
+        // 更新时钟显示
         function updateClock() {
             const now = new Date();
             const timeDigits = [
@@ -124,24 +155,18 @@
                 document.getElementById('seconds-units')
             ];
 
-            digitElements.forEach((element, index) => {
-                const top = element.querySelector('.flip-top');
-                const bottom = element.querySelector('.flip-bottom');
-
-                // 检查数字是否不同，若不同则进行动画
-                if (top.textContent !== String(timeDigits[index])) {
-                    top.textContent = String(timeDigits[index]);
-                    bottom.textContent = String(timeDigits[index]);
-                    
-                    element.classList.add('flip-animation');
-                    setTimeout(() => element.classList.remove('flip-animation'), 500);
-                }
+            digitElements.forEach((digit, index) => {
+                updateDigit(digit, timeDigits[index].toString());
             });
         }
 
-        // 每秒更新一次时钟
+        // 初始渲染和数字更新
+        document.querySelectorAll(".digit").forEach(digit => {
+            digit.replaceWith(createDigitElement());
+        });
+
         setInterval(updateClock, 1000);
         updateClock();
     </script>
 </body>
-</html>
+</ht
