@@ -1,103 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rotating Hello World Sphere</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, #0d0d0d, #3a3a3a);
-      overflow: hidden;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全宇宙文字墙</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
 
-    .sphere {
-      position: relative;
-      width: 500px;
-      height: 500px;
-      perspective: 1000px;
-    }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    .text-layer {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform-style: preserve-3d;
-      transform: translate(-50%, -50%);
-    }
-
-    .text {
-      position: absolute;
-      font-size: 20px;
-      color: #0ff;
-      font-weight: bold;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-      transition: transform 0.5s ease;
-    }
-  </style>
+        .container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: sans-serif;
+            color: white;
+            z-index: 2;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-  <div class="sphere">
-    <div class="text-layer" id="textLayer">
-      <!-- 更多语言的“Hello World”文本 -->
-      <div class="text" style="transform: rotateX(0deg) rotateY(0deg) translateZ(150px);">Hello World (English)</div>
-      <div class="text" style="transform: rotateX(20deg) rotateY(30deg) translateZ(150px);">こんにちは世界 (Japanese)</div>
-      <div class="text" style="transform: rotateX(-20deg) rotateY(-30deg) translateZ(150px);">你好，世界 (Chinese)</div>
-      <div class="text" style="transform: rotateX(40deg) rotateY(60deg) translateZ(150px);">Hola Mundo (Spanish)</div>
-      <div class="text" style="transform: rotateX(-40deg) rotateY(-60deg) translateZ(150px);">Bonjour le monde (French)</div>
-      <div class="text" style="transform: rotateX(60deg) rotateY(90deg) translateZ(150px);">Hallo Welt (German)</div>
-      <div class="text" style="transform: rotateX(-60deg) rotateY(-90deg) translateZ(150px);">Привет мир (Russian)</div>
-      <div class="text" style="transform: rotateX(80deg) rotateY(120deg) translateZ(150px);">안녕하세요 세계 (Korean)</div>
-      <div class="text" style="transform: rotateX(-80deg) rotateY(-120deg) translateZ(150px);">Ciao mondo (Italian)</div>
-      <div class="text" style="transform: rotateX(100deg) rotateY(150deg) translateZ(150px);">Olá Mundo (Portuguese)</div>
-      <div class="text" style="transform: rotateX(120deg) rotateY(150deg) translateZ(150px);">Merhaba dünya (Turkish)</div>
-      <div class="text" style="transform: rotateX(140deg) rotateY(180deg) translateZ(150px);">γειά σας κόσμος (Greek)</div>
-      <div class="text" style="transform: rotateX(-140deg) rotateY(-180deg) translateZ(150px);">สวัสดีโลก (Thai)</div>
-      <div class="text" style="transform: rotateX(160deg) rotateY(210deg) translateZ(150px);">שלום עולם (Hebrew)</div>
-      <div class="text" style="transform: rotateX(-160deg) rotateY(-210deg) translateZ(150px);">Xin chào thế giới (Vietnamese)</div>
-      <div class="text" style="transform: rotateX(180deg) rotateY(240deg) translateZ(150px);">Bună ziua, lume (Romanian)</div>
-      <div class="text" style="transform: rotateX(-180deg) rotateY(-240deg) translateZ(150px);">Dia duit ar an domhan (Irish)</div>
-      <div class="text" style="transform: rotateX(200deg) rotateY(270deg) translateZ(150px);">Aloha Honua (Hawaiian)</div>
-      <div class="text" style="transform: rotateX(-200deg) rotateY(-270deg) translateZ(150px);">Dzień dobry, świecie (Polish)</div>
-      <div class="text" style="transform: rotateX(220deg) rotateY(300deg) translateZ(150px);">Sawasdee Khrap, Phee (Lao)</div>
-      <div class="text" style="transform: rotateX(-220deg) rotateY(-300deg) translateZ(150px);">Sawubona Mhlaba (Zulu)</div>
-      <div class="text" style="transform: rotateX(240deg) rotateY(330deg) translateZ(150px);">Konnichiwa Sekai (Japanese)</div>
-      <div class="text" style="transform: rotateX(-240deg) rotateY(-330deg) translateZ(150px);">Pozdrav svijetu (Croatian)</div>
-      <div class="text" style="transform: rotateX(260deg) rotateY(360deg) translateZ(150px);">Habari Dunia (Swahili)</div>
-      <div class="text" style="transform: rotateX(-260deg) rotateY(-360deg) translateZ(150px);">Mingalaba Duniya (Burmese)</div>
-      <div class="text" style="transform: rotateX(280deg) rotateY(390deg) translateZ(150px);">Kamusta, Mundo (Filipino)</div>
-      <div class="text" style="transform: rotateX(-280deg) rotateY(-390deg) translateZ(150px);">Vahèi Maiô (Fijian)</div>
-      <div class="text" style="transform: rotateX(300deg) rotateY(420deg) translateZ(150px);">Saluton mondo (Esperanto)</div>
-      <div class="text" style="transform: rotateX(-300deg) rotateY(-420deg) translateZ(150px);">Merhba Dinja (Maltese)</div>
-      <div class="text" style="transform: rotateX(320deg) rotateY(450deg) translateZ(150px);">Sampurasun, dunya (Sundanese)</div>
-      <div class="text" style="transform: rotateX(-320deg) rotateY(-450deg) translateZ(150px);">Kumusta Mundo (Tagalog)</div>
-      <!-- Add more languages here as you need -->
+    <div class="container">
+        <h1>全宇宙的"你好，世界"</h1>
+        <p>请移动鼠标，查看不同语言版本的"你好，世界"在宇宙中飘动！</p>
     </div>
-  </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/FontLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/geometries/TextGeometry.js"></script>
+    <script>
+        // 设置场景、相机和渲染器
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-  <script>
-    let angleX = 0;
-    let angleY = 0;
-    let speedX = 0.5;
-    let speedY = 0.5;
-    const textLayer = document.getElementById('textLayer');
+        // 文字内容数组（不同语言的“你好，世界”）
+        const words = [
+            "你好，世界", "Hello, World", "Hola, Mundo", "Bonjour, le Monde", "Ciao, Mondo",
+            "Olá, Mundo", "Привет, мир", "こんにちは、世界", "안녕하세요, 세계", "नमस्ते, दुनिया",
+            "Hallo, Welt", "שלום, עולם", "مرحبا، بالعالم", "Witaj, świecie", "Hei, verden",
+            "Hej, världen", "Ahoj, světe", "Helo, Byd", "Xin chào, thế giới", "Szia, Világ",
+            "Moni, agbaye", "Kamusta, mundo", "Salam, Dunia", "Halo, Dunia"
+        ];
 
-    function rotateSphere() {
-      angleX += speedX;
-      angleY += speedY;
+        // 粒子材质
+        const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
 
-      textLayer.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+        // 加载字体并创建文字
+        const loader = new THREE.FontLoader();
+        let font;
 
-      requestAnimationFrame(rotateSphere);
-    }
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(loadedFont) {
+            font = loadedFont;
+            words.forEach((word, index) => {
+                const geometry = new THREE.TextGeometry(word, {
+                    font: font,
+                    size: 3,
+                    height: 0.1
+                });
 
-    rotateSphere();
-  </script>
+                const textMesh = new THREE.Mesh(geometry, particleMaterial);
+                textMesh.position.set(
+                    Math.random() * 1000 - 500,
+                    Math.random() * 1000 - 500,
+                    Math.random() * 1000 - 500
+                );
+
+                scene.add(textMesh);
+            });
+        });
+
+        // 设置相机的位置
+        camera.position.z = 500;
+
+        // 鼠标移动监听
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // 动画函数
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // 让每个文字旋转
+            scene.children.forEach(child => {
+                if (child instanceof THREE.Mesh) {
+                    child.rotation.x += 0.01;
+                    child.rotation.y += 0.01;
+                }
+            });
+
+            // 跟随鼠标改变视角
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
 </body>
 </html>
