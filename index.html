@@ -44,17 +44,17 @@
         // 粒子材质
         const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
 
-        // 加载字体并创建文字
+        // 加载自定义字体并创建文字
         const loader = new THREE.FontLoader();
         let font;
 
-        // 字体加载完成后执行
-        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(loadedFont) {
+        // 修改字体路径为自定义的字体文件
+        loader.load('https://example.com/path/to/noto_sans_font.typeface.json', function(loadedFont) {
             font = loadedFont;
             words.forEach((word, index) => {
                 const geometry = new THREE.TextGeometry(word, {
                     font: font,
-                    size: 30,  // 字体大小调整为 10
+                    size: 10,  // 字体大小调整为 10
                     height: 0.1
                 });
 
