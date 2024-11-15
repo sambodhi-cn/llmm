@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全宇宙文字墙</title>
+    <title>全宇宙文字墙 - 三体</title>
     <style>
         body, html {
             margin: 0;
@@ -32,29 +32,35 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // 文字内容数组（不同语言的“你好，世界”）
+        // 文字内容（根据《三体》背景设定的宇宙文明哲学问题与警告）
         const words = [
-            "你好，世界", "Hello, World", "Hola, Mundo", "Bonjour, le Monde", "Ciao, Mondo",
-            "Olá, Mundo", "Привет, мир", "こんにちは、世界", "안녕하세요, 세계", "नमस्ते, दुनिया",
-            "Hallo, Welt", "שלום, עולם", "مرحبا، بالعالم", "Witaj, świecie", "Hei, verden",
-            "Hej, världen", "Ahoj, světe", "Helo, Byd", "Xin chào, thế giới", "Szia, Világ",
-            "Moni, agbaye", "Kamusta, mundo", "Salam, Dunia", "Halo, Dunia"
+            "三体文明：我们来自三颗不稳定的星球，面对无法预测的命运。",
+            "全宇宙的种族：孤独与脆弱是宇宙中所有文明的共同命运。",
+            "三体问题：宇宙中的力量不对称，决定了我们的灭绝。",
+            "警告：三体星系中的引力波已导致系统不稳定。",
+            "文明的进化：物理定律无法保证任何文明的永恒。",
+            "生存的意义：在无尽的宇宙中，生存即是胜利。",
+            "智慧的悲剧：我们曾以为有智慧，然而我们依然无法预测未来。",
+            "宇宙的法则：在这片星空下，没有绝对的安全。",
+            "全宇宙的文明：在时间与空间的洪流中，我们都是微小的存在。",
+            "三体的困境：无法逃脱的命运，如同你们即将面临的考验。",
+            "宇宙的结局：没有谁能逃避最后的黑暗。",
+            "文明的选择：在无数的死寂中，你们或许会学到生存的真正意义。"
         ];
 
         // 粒子材质
         const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.8 });
 
-        // 加载自定义字体并创建文字
+        // 加载字体并创建文字
         const loader = new THREE.FontLoader();
         let font;
 
-        // 修改字体路径为自定义的字体文件
-        loader.load('https://example.com/path/to/noto_sans_font.typeface.json', function(loadedFont) {
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(loadedFont) {
             font = loadedFont;
             words.forEach((word, index) => {
                 const geometry = new THREE.TextGeometry(word, {
                     font: font,
-                    size: 10,  // 字体大小调整为 10
+                    size: 15,  // 字体大小调整为 15
                     height: 0.1
                 });
 
@@ -73,7 +79,7 @@
         });
 
         // 设置相机的位置
-        camera.position.z = 500;
+        camera.position.z = 1000;
 
         // 鼠标移动监听
         let mouseX = 0;
