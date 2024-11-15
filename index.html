@@ -42,6 +42,7 @@
             width: 1em;
             height: 1em;
             perspective: 1000px;
+            margin: 0 0.1em;
         }
 
         .flip-top, .flip-bottom {
@@ -126,9 +127,12 @@
             digitElements.forEach((element, index) => {
                 const top = element.querySelector('.flip-top');
                 const bottom = element.querySelector('.flip-bottom');
-                if (top.textContent != timeDigits[index]) {
-                    top.textContent = timeDigits[index];
-                    bottom.textContent = timeDigits[index];
+
+                // 检查数字是否不同，若不同则进行动画
+                if (top.textContent !== String(timeDigits[index])) {
+                    top.textContent = String(timeDigits[index]);
+                    bottom.textContent = String(timeDigits[index]);
+                    
                     element.classList.add('flip-animation');
                     setTimeout(() => element.classList.remove('flip-animation'), 500);
                 }
