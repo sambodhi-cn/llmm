@@ -18,24 +18,9 @@
             top: 0;
             left: 0;
         }
-
-        .container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-family: sans-serif;
-            color: white;
-            z-index: 2;
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>全宇宙的"你好，世界"</h1>
-        <p>请移动鼠标，查看不同语言版本的"你好，世界"在宇宙中飘动！</p>
-    </div>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/FontLoader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/geometries/TextGeometry.js"></script>
@@ -63,12 +48,13 @@
         const loader = new THREE.FontLoader();
         let font;
 
+        // 字体加载完成后执行
         loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(loadedFont) {
             font = loadedFont;
             words.forEach((word, index) => {
                 const geometry = new THREE.TextGeometry(word, {
                     font: font,
-                    size: 3,
+                    size: 30,  // 字体大小调整为 10
                     height: 0.1
                 });
 
@@ -81,6 +67,9 @@
 
                 scene.add(textMesh);
             });
+
+            // 初始化动画
+            animate();
         });
 
         // 设置相机的位置
@@ -115,8 +104,6 @@
 
             renderer.render(scene, camera);
         }
-
-        animate();
     </script>
 </body>
 </html>
